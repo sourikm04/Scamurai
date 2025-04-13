@@ -1,0 +1,32 @@
+
+body {
+    margin: 0;
+    line-height: normal;
+  }
+  .GLOBAL {
+    position: relative;
+    min-width: 100vw;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #000000 40%, #00dcff 100%);
+    overflow: hidden;
+    font-size: var(--font-size-5xl);
+    color: var(--color-aliceblue);
+    font-family: var(--font-roboto);
+  }
+  
+  
+  :root {
+    /* Fonts */
+    --font-roboto: Roboto;
+    --font-noto-sans-georgian: 'Noto Sans Georgian';
+    --font-roboto-condensed: 'Roboto Condensed';
+    --font-kode-mono: 'Kode Mono';
+    /* font sizes */
+    --font-size-5xl: 24px;
+    --font-size-29xl: 48px;
+    /* Colors */
+    --color-aliceblue: #dff1f9;
+    --color-steelblue: #005173;
+    /* Border radiuses */
+    --br-mini: 15px;
+  }
