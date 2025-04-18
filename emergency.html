@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scamurai - Emergency Contacts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="emergency.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html">
+          <img class="logo-light" src="images/LOGO.png" alt="Scamurai Logo">
+          <img class="logo-dark" src="images/LOGO_D.png" alt="Scamurai Logo">
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html"><i class="fas fa-home"></i></a>
+          <a href="#"><i class="fas fa-info-circle"></i></a>
+          <a id="themeToggle"><i class="fas fa-adjust"></i></a>
+        </div>
+        <i class="menu-btn fas fa-bars" id="menuBtn"></i>
+      </nav>
+
+ <main>
+    <div class="container">
+        <div class="page-header">
+          <h1>Emergency Contacts</h1>
+          <p>Immediate assistance for cyber security incidents</p>
+        </div>
+
+        <div class="emergency-grid">
+            <!-- Reporting Portals Card -->
+            <div class="emergency-card">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle card-icon"></i>
+                    <h2>Reporting Portals</h2>
+                </div>
+                <ul class="contact-list">
+                    <li class="contact-item">
+                        <a href="https://cybercrime.gov.in" class="contact-link" target="_blank">
+                            <i class="fas fa-globe fa-2x"></i>
+                            <div>
+                                <h3>National Cyber Crime Portal</h3>
+                                <p>www.cybercrime.gov.in</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="contact-item">
+                        <a href="tel:1930" class="contact-link">
+                            <i class="fas fa-phone fa-2x"></i>
+                            <div>
+                                <h3>Cyber Crime Helpline</h3>
+                                <p>Dial: 1930</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Emergency Helplines Card -->
+            <div class="emergency-card">
+                <div class="card-header">
+                    <i class="fas fa-life-ring card-icon"></i>
+                    <h2>Emergency Helplines</h2>
+                </div>
+                <ul class="contact-list">
+                    <li class="contact-item">
+                        <a href="tel:112" class="contact-link">
+                            <i class="fas fa-phone fa-2x"></i>
+                            <div>
+                                <h3>National Emergency</h3>
+                                <p>Dial: 112</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="contact-item">
+                        <a href="tel:155260" class="contact-link">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                            <div>
+                                <h3>Cyber Security Helpline</h3>
+                                <p>Dial: 155260</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Banking Contacts Card -->
+            <div class="emergency-card">
+                <div class="card-header">
+                    <i class="fas fa-university card-icon"></i>
+                    <h2>Banking Contacts</h2>
+                </div>
+                <ul class="contact-list">
+                    <li class="contact-item">
+                        <a href="https://www.rbi.org.in" class="contact-link" target="_blank">
+                            <i class="fas fa-landmark fa-2x"></i>
+                            <div>
+                                <h3>Reserve Bank of India</h3>
+                                <p>www.rbi.org.in</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="contact-item">
+                        <a href="tel:14440" class="contact-link">
+                            <i class="fas fa-credit-card fa-2x"></i>
+                            <div>
+                                <h3>NPCI Fraud Helpline</h3>
+                                <p>Dial: 14440</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Additional Resources Card -->
+            <div class="emergency-card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle card-icon"></i>
+                    <h2>Additional Resources</h2>
+                </div>
+                <ul class="contact-list">
+                    <li class="contact-item">
+                        <a href="https://cert-in.org.in" class="contact-link" target="_blank">
+                            <i class="fas fa-shield-virus fa-2x"></i>
+                            <div>
+                                <h3>CERT-In</h3>
+                                <p>Cyber Emergency Team</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="contact-item">
+                        <a href="https://www.mha.gov.in" class="contact-link" target="_blank">
+                            <i class="fas fa-balance-scale fa-2x"></i>
+                            <div>
+                                <h3>Ministry of Home Affairs</h3>
+                                <p>www.mha.gov.in</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+ </main>
+    <script>
+        // Staggered Card Animations
+        const cards = document.querySelectorAll('.emergency-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.2}s`;
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scamurai - URL Checker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="url-checker.css">
+
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html">
+          <img class="logo-light" src="images/LOGO.png" alt="Scamurai Logo">
+          <img class="logo-dark" src="images/LOGO_D.png" alt="Scamurai Logo">
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html"><i class="fas fa-home"></i></a>
+          <a href="#"><i class="fas fa-info-circle"></i></a>
+          <a id="themeToggle"><i class="fas fa-adjust"></i></a>
+        </div>
+        <i class="menu-btn fas fa-bars" id="menuBtn"></i>
+      </nav>
+
+      <main>
+        <div class="container">
+            <div class="checker-card">
+                <h2><i class="fas fa-link"></i> URL Authenticity Check</h2>
+                <br>
+                <p>Verify the safety of any website URL instantly. Our advanced system checks against known phishing sites, malicious content, and suspicious patterns.</p>
+            
+                <form id="urlForm">
+                    <input type="url" class="url-input" placeholder="Enter URL to check..." required>
+                    <button type="submit" class="submit-btn">Check URL Safety</button>
+                </form>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing URL...</p>
+            </div>
+
+            <div class="result-card" id="resultCard">
+                <h3 id="resultTitle">Safety Result</h3>
+                <p id="resultText"></p>
+                <div class="risk-factors" id="riskFactors"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>   
+
+        const form = document.getElementById('urlForm');
+        const resultCard = document.getElementById('resultCard');
+        const loading = document.getElementById('loading');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const urlInput = document.querySelector('.url-input');
+            
+            loading.style.display = 'block';
+            resultCard.style.display = 'none';
+
+            // Eikhane Api Call Korte Hobe
+            setTimeout(() => {
+                loading.style.display = 'none';
+                resultCard.style.display = 'block';
+                
+                // Example nawa hoyeche
+                const isSafe = Math.random() > 0.5;
+                showResult(isSafe, urlInput.value);
+            }, 2000);
+        });
+
+
+        // Form Submission
+        function showResult(isSafe, url) {
+            const resultTitle = document.getElementById('resultTitle');
+            const resultText = document.getElementById('resultText');
+            const riskFactors = document.getElementById('riskFactors');
+
+            resultCard.className = `result-card ${isSafe ? 'safe' : 'unsafe'}`;
+            resultTitle.textContent = isSafe ? '✅ URL is Safe' : '⚠️ Unsafe URL Detected';
+            resultText.textContent = isSafe ? 
+                `The URL ${url} appears to be safe based on our analysis.` : 
+                `We've detected potential security risks with ${url}:`;
+
+            if (!isSafe) {
+                const risks = ['Phishing attempt detected', 'Suspicious domain registration', 
+                             'Malware distribution suspected', 'Unsecured connection'];
+                riskFactors.innerHTML = risks.map(risk => `
+                    <div class="risk-item">
+                        <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                        ${risk}
+                    </div>
+                `).join('');
+            } else {
+                riskFactors.innerHTML = '';
+            }
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
