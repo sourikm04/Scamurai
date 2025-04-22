@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scamurai - URL Checker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="url-checker.css">
+    <script src="url-detector.js"></script>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html">
+          <img class="logo-light" src="images/LOGO.png" alt="Scamurai Logo">
+          <img class="logo-dark" src="images/LOGO_D.png" alt="Scamurai Logo">
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html"><i class="fas fa-home"></i></a>
+          <a href="about-us.html"><i class="fas fa-info-circle"></i></a>
+          <a id="themeToggle"><i class="fas fa-adjust"></i></a>
+        </div>
+        <i class="menu-btn fas fa-bars" id="menuBtn"></i>
+      </nav>
+
+      <main>
+        <div class="container">
+            <div class="checker-card">
+                <h2><i class="fas fa-link"></i> URL Authenticity Check</h2>
+                <br>
+                <p>Verify the safety of any website URL instantly. Our advanced system checks against known phishing sites, malicious content, and suspicious patterns.</p>
+            
+                <form id="urlForm">
+                    <input type="url" class="url-input" placeholder="Enter URL to check..." required id="urlInput">
+                    <button type="submit" class="submit-btn">Check URL Safety</button>
+                </form>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing URL...</p>
+            </div>
+
+            <div class="result-card" id="resultCard">
+                <h3 id="resultTitle">Safety Result</h3>
+                <p id="resultText"></p>
+                <div class="risk-factors" id="riskFactors"></div>
+                <div class="technical-details" id="technicalDetails"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize the URL detector with dataset
+            await urlDetector.init();
+            
+            const form = document.getElementById('urlForm');
+            const resultCard = document.getElementById('resultCard');
+            const loading = document.getElementById('loading');
+            const urlInput = document.getElementById('urlInput');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                loading.style.display = 'block';
+                resultCard.style.display = 'none';
+
+                try {
+                    const url = urlInput.value.trim();
+                    const result = await urlDetector.analyzeUrl(url);
+                    showResult(result);
+                } catch (error) {
+                    console.error('Error analyzing URL:', error);
+                    showError();
+                } finally {
+                    loading.style.display = 'none';
+                    resultCard.style.display = 'block';
+                }
+            });
+        });
+
+        function showResult(result) {
+            const resultTitle = document.getElementById('resultTitle');
+            const resultText = document.getElementById('resultText');
+            const riskFactors = document.getElementById('riskFactors');
+            const technicalDetails = document.getElementById('technicalDetails');
+
+            resultCard.className = `result-card ${result.isSafe ? 'safe' : 'unsafe'}`;
+            
+            if (result.isSafe) {
+                resultTitle.innerHTML = '✅ URL is Safe';
+                resultText.textContent = `The URL ${result.url} appears to be safe based on our analysis.`;
+            } else {
+                resultTitle.innerHTML = '⚠️ Unsafe URL Detected';
+                resultText.textContent = `We've detected potential security risks with ${result.url}:`;
+            }
+
+            // Display risk factors
+            riskFactors.innerHTML = result.risks.map(risk => `
+                <div class="risk-item">
+                    <i class="fas ${risk.severity === 'high' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle'}" 
+                       style="color: ${risk.severity === 'high' ? '#f44336' : '#ff9800'}; margin-right: 10px;"></i>
+                    ${risk.message} (${risk.type})
+                </div>
+            `).join('');
+
+            // Display technical details
+            technicalDetails.innerHTML = `
+                <h4>Technical Analysis:</h4>
+                <div class="tech-detail"><strong>Domain:</strong> ${result.domain}</div>
+                <div class="tech-detail"><strong>Age:</strong> ${result.domainAge || 'unknown'}</div>
+                <div class="tech-detail"><strong>SSL:</strong> ${result.hasSSL ? '✅ Secure' : '⚠️ Not Secure'}</div>
+                <div class="tech-detail"><strong>IP Location:</strong> ${result.ipLocation || 'unknown'}</div>
+            `;
+        }
+
+        function showError() {
+            const resultTitle = document.getElementById('resultTitle');
+            const resultText = document.getElementById('resultText');
+            
+            resultCard.className = 'result-card unsafe';
+            resultTitle.innerHTML = '⚠️ Analysis Error';
+            resultText.textContent = 'We encountered an error while analyzing the URL. Please try again.';
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

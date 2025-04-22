@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scamurai - AI Cyber Security Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html">
+          <img class="logo-light" src="images/LOGO.png" alt="Scamurai Logo">
+          <img class="logo-dark" src="images/LOGO_D.png" alt="Scamurai Logo">
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html"><i class="fas fa-home"></i></a>
+          <a href="about-us.html"><i class="fas fa-info-circle"></i></a>
+          <a id="themeToggle"><i class="fas fa-adjust"></i></a>
+        </div>
+        <i class="menu-btn fas fa-bars" id="menuBtn"></i>
+      </nav>
+    <main>  
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-robot"></i> Ai Assistant</h1>
+            <p>Talk to our assistant about cyber Security, scamurai and its features</p>
+        </div>
+        <div class="chat-container">
+            <iframe 
+                class="chat-iframe" 
+                id="chatFrame"
+                src="https://www.chatbase.co/chatbot-iframe/fdkzdhVo53Y2fA0jPgLr6"
+                data-light-src="https://www.chatbase.co/chatbot-iframe/fdkzdhVo53Y2fA0jPgLr6"
+                data-dark-src="https://www.chatbase.co/chatbot-iframe/EnT1VnhYxnm1GP5-SzpWQ"
+                allow="microphone"
+            ></iframe>
+        </div>
+    </div>
+    </main>
+
+    <script>
+        // Iframe Resizer
+        window.addEventListener('message', (e) => {
+            if (e.data && e.data.type === 'chatHeight') {
+                chatFrame.style.height = `${e.data.height}px`;
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
