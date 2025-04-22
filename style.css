@@ -3,6 +3,7 @@
   --BGdark-color: linear-gradient(180deg, #000000 40%, #00dcff 100%);
   --Main-color:#00455e;
   --Text-color:#000000;
+  --secondary-color: #00e1ff;
   --Card-color: #ffffff;
 }
 
@@ -11,6 +12,7 @@ body[data-theme="dark"] {
   --BGdark-color: linear-gradient(180deg, #e5e5e5 40%, #00dcff 100%);
   --Main-color:#00e1ff;
   --Text-color:#ffffff;
+  --secondary-color: #00e1ff;
   --Card-color: #004043;
 }
 
@@ -104,13 +106,16 @@ body {
   max-width: 800px;
   color: var(--Text-color);
   position: relative;
-  h3{
-    padding-top: 2px;
-  }
-  p{
-    font-size: 23px;
-  }
-}  
+  border: 3px solid var(--secondary-color);
+}
+
+.card h3 {
+  padding-top: 2px;
+}
+
+.card p {
+  font-size: 23px;
+}
 
 .card:hover {
   transform: translateY(-7px);
