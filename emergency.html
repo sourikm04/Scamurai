@@ -5,151 +5,905 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scamurai - Emergency Contacts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="emergency.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00BCD4;
+            --primary-dark: #0097A7;
+            --secondary: #00E5FF;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --light-bg: #eef9ff;
+            --gray: #64748b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body[data-theme="dark"] {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background: linear-gradient(135deg, #0f172a 100%, #1e293b 100%);
+        }
+
+        /* Background animations */
+        .grid-bg, .hexagons, .particles, .binary-code, .floating-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 188, 212, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 188, 212, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            animation: gridMove 30s linear infinite;
+        }
+
+        .hexagon {
+            position: absolute;
+            width: 60px;
+            height: 35px;
+            background: var(--primary);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            opacity: 0.2;
+            animation: floatHexagon linear infinite;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatParticle linear infinite;
+        }
+
+        .binary-digit {
+            position: absolute;
+            color: var(--primary);
+            font-family: monospace;
+            font-size: 1.2rem;
+            opacity: 0.3;
+            animation: floatBinary linear infinite;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 188, 212, 0.1);
+            animation: floatCircle linear infinite, pulseCircle 4s ease-in-out infinite;
+        }
+
+        /* Improved dark mode visibility */
+        body[data-theme="dark"] .grid-bg {
+            opacity: 0.2;
+        }
+
+        body[data-theme="dark"] .hexagon {
+            opacity: 0.15;
+            background: var(--secondary);
+        }
+
+        body[data-theme="dark"] .particle {
+            opacity: 0.2;
+            background: var(--secondary);
+        }
+
+        body[data-theme="dark"] .binary-digit {
+            opacity: 0.2;
+            color: var(--secondary);
+        }
+
+        body[data-theme="dark"] .floating-circle {
+            opacity: 0.15;
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        /* Animations */
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        @keyframes floatHexagon {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.2; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        @keyframes floatBinary {
+            0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        @keyframes floatCircle {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, -100vh); }
+        }
+
+        @keyframes pulseCircle {
+            0% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.1; }
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: rgba(248, 250, 252, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        body[data-theme="dark"] .nav-bar {
+            background-color: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-bar a {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-light, .logo-dark {
+            height: 40px;
+            transition: var(--transition);
+        }
+
+        .logo-dark {
+            display: none;
+        }
+
+        body[data-theme="dark"] .logo-light {
+            display: none;
+        }
+
+        body[data-theme="dark"] .logo-dark {
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body[data-theme="dark"] .nav-links a {
+            color: #e2e8f0;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        body[data-theme="dark"] .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .menu-btn:hover {
+            color: var(--primary);
+        }
+
+        body[data-theme="dark"] .menu-btn {
+            color: #e2e8f0;
+        }
+        body[data-theme="dark"] .menu-btn:hover {
+            color: var(--secondary);
+        }
+
+        /* Full-screen mobile menu */
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                height: calc(100vh - 80px);
+                padding: 2rem;
+                transition: var(--transition);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            body[data-theme="dark"] .nav-links {
+                background-color: var(--dark);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        main {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            flex: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            gap: 15px;
+        }
+
+        body[data-theme="dark"] .page-header h1 {
+            color: var(--secondary);
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .page-header h1 i {
+            margin-right: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        body[data-theme="dark"] .page-header h1::after {
+            background: var(--secondary);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 0.5rem;
+        }
+
+        body[data-theme="dark"] .page-header p {
+            color: #94a3b8;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .emergency-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            animation: fadeIn 0.8s ease-out;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body[data-theme="dark"] .emergency-card {
+            background: rgba(30, 41, 59, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        .emergency-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 188, 212, 0.2);
+        }
+
+        body[data-theme="dark"] .emergency-card:hover {
+            box-shadow: 0 15px 35px rgba(0, 229, 255, 0.25);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: var(--light-bg);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        body[data-theme="dark"] .card-icon {
+            background: #1e293b;
+            color: var(--secondary);
+        }
+
+        .emergency-card:hover .card-icon {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: white;
+        }
+
+        body[data-theme="dark"] .emergency-card:hover .card-icon {
+            background: var(--secondary);
+            color: var(--dark);
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        body[data-theme="dark"] .card-header h2 {
+            color: #e2e8f0;
+        }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            flex: 1;
+        }
+
+        .contact-item {
+            margin-bottom: 1.2rem;
+            padding: 1.2rem;
+            background: var(--light-bg);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        body[data-theme="dark"] .contact-item {
+            background: #1e293b;
+        }
+
+        .contact-item:hover {
+            background: var(--primary);
+            transform: translateX(10px);
+        }
+
+        body[data-theme="dark"] .contact-item:hover {
+            background: var(--secondary);
+        }
+
+        .contact-link {
+            text-decoration: none;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        body[data-theme="dark"] .contact-link {
+            color: #e2e8f0;
+        }
+
+        .contact-item:hover .contact-link {
+            color: white;
+        }
+
+        body[data-theme="dark"] .contact-item:hover .contact-link {
+            color: var(--dark);
+        }
+
+        .contact-link i {
+            font-size: 2rem;
+            min-width: 40px;
+        }
+
+        .contact-link div h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-link div p {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        body[data-theme="dark"] .contact-link div p {
+            color: #94a3b8;
+        }
+
+        .contact-item:hover .contact-link div p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        body[data-theme="dark"] .contact-item:hover .contact-link div p {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+        }
+
+        body[data-theme="dark"] footer {
+            background-color: #0f172a;
+            border-top: 1px solid #1e293b;
+        }
+
+        .copyright {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 900px) {
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-card {
+                padding: 1.8rem;
+            }
+            
+            .card-header {
+                gap: 1rem;
+            }
+            
+            .card-icon {
+                font-size: 2rem;
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Background elements -->
+    <div class="grid-bg"></div>
+    <div class="hexagons" id="hexagons"></div>
+    <div class="particles" id="particles"></div>
+    <div class="binary-code" id="binaryCode"></div>
+    <div class="floating-circles" id="floatingCircles"></div>
+
     <nav class="nav-bar">
         <a href="index.html">
-          <img class="logo-light" src="images/LOGO.png" alt="Scamurai Logo">
-          <img class="logo-dark" src="images/LOGO_D.png" alt="Scamurai Logo">
+            <img class="logo-light" src="images/LOGO.png" alt="Scamurai Logo">
+            <img class="logo-dark" src="images/LOGO_D.png" alt="Scamurai Logo">
         </a>
         <div class="nav-links" id="navLinks">
-          <a href="index.html"><i class="fas fa-home"></i></a>
-          <a href="about-us.html"><i class="fas fa-info-circle"></i></a>
-          <a id="themeToggle"><i class="fas fa-adjust"></i></a>
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="about-us.html"><i class="fas fa-info-circle"></i> About</a>
+            <a id="themeToggle"><i class="fas fa-adjust"></i> Theme</a>
         </div>
         <i class="menu-btn fas fa-bars" id="menuBtn"></i>
-      </nav>
+    </nav>
 
- <main>
-    <div class="container">
-        <div class="page-header">
-          <h1>Emergency Contacts</h1>
-          <p>Immediate assistance for cyber security incidents</p>
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-phone-alt"></i> Emergency Contacts</h1>
+                <p>Immediate assistance for cyber security incidents</p>
+            </div>
+
+            <div class="emergency-grid">
+                <!-- Reporting Portals Card -->
+                <div class="emergency-card">
+                    <div class="card-header">
+                        <i class="fas fa-exclamation-triangle card-icon"></i>
+                        <h2>Reporting Portals</h2>
+                    </div>
+                    <ul class="contact-list">
+                        <li class="contact-item">
+                            <a href="https://cybercrime.gov.in" class="contact-link" target="_blank">
+                                <i class="fas fa-globe"></i>
+                                <div>
+                                    <h3>National Cyber Crime Portal</h3>
+                                    <p>www.cybercrime.gov.in</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="contact-item">
+                            <a href="tel:1930" class="contact-link">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h3>Cyber Crime Helpline</h3>
+                                    <p>Dial: 1930</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Emergency Helplines Card -->
+                <div class="emergency-card">
+                    <div class="card-header">
+                        <i class="fas fa-life-ring card-icon"></i>
+                        <h2>Emergency Helplines</h2>
+                    </div>
+                    <ul class="contact-list">
+                        <li class="contact-item">
+                            <a href="tel:112" class="contact-link">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h3>National Emergency</h3>
+                                    <p>Dial: 112</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="contact-item">
+                            <a href="tel:155260" class="contact-link">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <h3>Cyber Security Helpline</h3>
+                                    <p>Dial: 155260</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Banking Contacts Card -->
+                <div class="emergency-card">
+                    <div class="card-header">
+                        <i class="fas fa-university card-icon"></i>
+                        <h2>Banking Contacts</h2>
+                    </div>
+                    <ul class="contact-list">
+                        <li class="contact-item">
+                            <a href="https://www.rbi.org.in" class="contact-link" target="_blank">
+                                <i class="fas fa-landmark"></i>
+                                <div>
+                                    <h3>Reserve Bank of India</h3>
+                                    <p>www.rbi.org.in</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="contact-item">
+                            <a href="tel:14440" class="contact-link">
+                                <i class="fas fa-credit-card"></i>
+                                <div>
+                                    <h3>NPCI Fraud Helpline</h3>
+                                    <p>Dial: 14440</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Additional Resources Card -->
+                <div class="emergency-card">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle card-icon"></i>
+                        <h2>Additional Resources</h2>
+                    </div>
+                    <ul class="contact-list">
+                        <li class="contact-item">
+                            <a href="https://cert-in.org.in" class="contact-link" target="_blank">
+                                <i class="fas fa-shield-virus"></i>
+                                <div>
+                                    <h3>CERT-In</h3>
+                                    <p>Cyber Emergency Team</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="contact-item">
+                            <a href="https://www.mha.gov.in" class="contact-link" target="_blank">
+                                <i class="fas fa-balance-scale"></i>
+                                <div>
+                                    <h3>Ministry of Home Affairs</h3>
+                                    <p>www.mha.gov.in</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
-        <div class="emergency-grid">
-            <!-- Reporting Portals Card -->
-            <div class="emergency-card">
-                <div class="card-header">
-                    <i class="fas fa-exclamation-triangle card-icon"></i>
-                    <h2>Reporting Portals</h2>
-                </div>
-                <ul class="contact-list">
-                    <li class="contact-item">
-                        <a href="https://cybercrime.gov.in" class="contact-link" target="_blank">
-                            <i class="fas fa-globe fa-2x"></i>
-                            <div>
-                                <h3>National Cyber Crime Portal</h3>
-                                <p>www.cybercrime.gov.in</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="contact-item">
-                        <a href="tel:1930" class="contact-link">
-                            <i class="fas fa-phone fa-2x"></i>
-                            <div>
-                                <h3>Cyber Crime Helpline</h3>
-                                <p>Dial: 1930</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Emergency Helplines Card -->
-            <div class="emergency-card">
-                <div class="card-header">
-                    <i class="fas fa-life-ring card-icon"></i>
-                    <h2>Emergency Helplines</h2>
-                </div>
-                <ul class="contact-list">
-                    <li class="contact-item">
-                        <a href="tel:112" class="contact-link">
-                            <i class="fas fa-phone fa-2x"></i>
-                            <div>
-                                <h3>National Emergency</h3>
-                                <p>Dial: 112</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="contact-item">
-                        <a href="tel:155260" class="contact-link">
-                            <i class="fas fa-shield-alt fa-2x"></i>
-                            <div>
-                                <h3>Cyber Security Helpline</h3>
-                                <p>Dial: 155260</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Banking Contacts Card -->
-            <div class="emergency-card">
-                <div class="card-header">
-                    <i class="fas fa-university card-icon"></i>
-                    <h2>Banking Contacts</h2>
-                </div>
-                <ul class="contact-list">
-                    <li class="contact-item">
-                        <a href="https://www.rbi.org.in" class="contact-link" target="_blank">
-                            <i class="fas fa-landmark fa-2x"></i>
-                            <div>
-                                <h3>Reserve Bank of India</h3>
-                                <p>www.rbi.org.in</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="contact-item">
-                        <a href="tel:14440" class="contact-link">
-                            <i class="fas fa-credit-card fa-2x"></i>
-                            <div>
-                                <h3>NPCI Fraud Helpline</h3>
-                                <p>Dial: 14440</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Additional Resources Card -->
-            <div class="emergency-card">
-                <div class="card-header">
-                    <i class="fas fa-info-circle card-icon"></i>
-                    <h2>Additional Resources</h2>
-                </div>
-                <ul class="contact-list">
-                    <li class="contact-item">
-                        <a href="https://cert-in.org.in" class="contact-link" target="_blank">
-                            <i class="fas fa-shield-virus fa-2x"></i>
-                            <div>
-                                <h3>CERT-In</h3>
-                                <p>Cyber Emergency Team</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="contact-item">
-                        <a href="https://www.mha.gov.in" class="contact-link" target="_blank">
-                            <i class="fas fa-balance-scale fa-2x"></i>
-                            <div>
-                                <h3>Ministry of Home Affairs</h3>
-                                <p>www.mha.gov.in</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    </main>
+    
+    <footer>
+        <div class="copyright">
+            © 2025 SCAMURAI. All rights reserved. | Cybersecurity Solutions for the Modern World
         </div>
-    </div>
- </main>
+    </footer>
+
     <script>
-        // Staggered Card Animations
-        const cards = document.querySelectorAll('.emergency-card');
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.2}s`;
+
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+        // Theme Switch
+    document.addEventListener("DOMContentLoaded", async () => {
+      const themeToggle = document.getElementById('themeToggle');
+      const body = document.body;
+      
+      // Load saved theme from localStorage or set default to 'light'
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      body.setAttribute('data-theme', savedTheme);
+      
+      themeToggle.addEventListener('click', () => {
+        const isDark = body.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+        
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+      
+      // Mobile Menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const navLinks = document.getElementById('navLinks');
+      
+      menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (!menuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+          navLinks.classList.remove('active');
+        }
+      });
+            
+            // Create background animations
+            createBackgroundAnimations();
+            
+            function createBackgroundAnimations() {
+                // Clear existing elements
+                document.getElementById('hexagons').innerHTML = '';
+                document.getElementById('particles').innerHTML = '';
+                document.getElementById('binaryCode').innerHTML = '';
+                document.getElementById('floatingCircles').innerHTML = '';
+                
+                // Create hexagons
+                const hexagonsContainer = document.getElementById('hexagons');
+                const hexagonCount = 15;
+                
+                for (let i = 0; i < hexagonCount; i++) {
+                    const hexagon = document.createElement('div');
+                    hexagon.classList.add('hexagon');
+                    
+                    // Random properties
+                    const size = Math.random() * 40 + 20;
+                    const posX = Math.random() * 100;
+                    const duration = Math.random() * 30 + 20;
+                    const delay = Math.random() * 10;
+                    
+                    hexagon.style.width = `${size}px`;
+                    hexagon.style.height = `${size * 0.577}px`;
+                    hexagon.style.left = `${posX}%`;
+                    hexagon.style.bottom = `-${size}px`;
+                    hexagon.style.animationDuration = `${duration}s`;
+                    hexagon.style.animationDelay = `${delay}s`;
+                    
+                    // Random color for hexagons
+                    const colors = ['#00BCD4', '#00E5FF', '#80DEEA', '#26C6DA'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    hexagon.style.background = color;
+                    
+                    hexagonsContainer.appendChild(hexagon);
+                }
+                
+                // Create particles
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 50;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Random properties
+                    const size = Math.random() * 8 + 2;
+                    const posX = Math.random() * 100;
+                    const duration = Math.random() * 20 + 10;
+                    const delay = Math.random() * 5;
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${posX}%`;
+                    particle.style.bottom = `-${size}px`;
+                    particle.style.animationDuration = `${duration}s`;
+                    particle.style.animationDelay = `${delay}s`;
+                    
+                    // Random color for particles
+                    const colors = ['#00BCD4', '#00E5FF', '#80DEEA', '#26C6DA'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.background = color;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+                
+                // Create binary code
+                const binaryContainer = document.getElementById('binaryCode');
+                const binaryCount = 30;
+                const binaryChars = ['0', '1'];
+                
+                for (let i = 0; i < binaryCount; i++) {
+                    const binaryDigit = document.createElement('div');
+                    binaryDigit.classList.add('binary-digit');
+                    
+                    // Random properties
+                    const posX = Math.random() * 100;
+                    const duration = Math.random() * 30 + 20;
+                    const delay = Math.random() * 10;
+                    const charCount = Math.floor(Math.random() * 10) + 5;
+                    let content = '';
+                    
+                    for(let j = 0; j < charCount; j++) {
+                        content += binaryChars[Math.floor(Math.random() * 2)];
+                    }
+                    
+                    binaryDigit.textContent = content;
+                    binaryDigit.style.left = `${posX}%`;
+                    binaryDigit.style.bottom = `-50px`;
+                    binaryDigit.style.animationDuration = `${duration}s`;
+                    binaryDigit.style.animationDelay = `${delay}s`;
+                    binaryDigit.style.fontSize = `${Math.random() * 10 + 14}px`;
+                    
+                    binaryContainer.appendChild(binaryDigit);
+                }
+                
+                // Create floating circles
+                const circlesContainer = document.getElementById('floatingCircles');
+                const circleCount = 10;
+                
+                for (let i = 0; i < circleCount; i++) {
+                    const circle = document.createElement('div');
+                    circle.classList.add('floating-circle');
+                    
+                    // Random properties
+                    const size = Math.random() * 200 + 50;
+                    const posX = Math.random() * 100;
+                    const duration = Math.random() * 40 + 20;
+                    const delay = Math.random() * 10;
+                    
+                    circle.style.width = `${size}px`;
+                    circle.style.height = `${size}px`;
+                    circle.style.left = `${posX}%`;
+                    circle.style.bottom = `-${size}px`;
+                    circle.style.animationDuration = `${duration}s`;
+                    circle.style.animationDelay = `${delay}s`;
+                    circle.style.opacity = `${Math.random() * 0.1 + 0.05}`;
+                    
+                    circlesContainer.appendChild(circle);
+                }
+            }
+            
+            // Animate cards on page load
+            const cards = document.querySelectorAll('.emergency-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
         });
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
