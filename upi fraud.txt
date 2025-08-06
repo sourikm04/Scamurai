@@ -1,0 +1,1102 @@
+
+reihw4wb2
+
+May 15, 2024
+
+1  Project Title: UPI Fraud Detection using Machine Learning
+ Introduction
+Welcome to the project on UPI fraud detection using machine learning! In this project, we aim to develop machine learning models to detect fraudulent transactions in UPI (Unified Payments Interface) data.
+
+ Project Information
+ Developer Names:
+Anuj Rastogi Ramya Karanam Atul Kumar
+Manish Ramadhar Nirmal Shourya Goenka
+Marudala Vinay Kadadevaru Jai Naik
+
+ Date of Completion:
+• 12th May 2024
+
+ Data Source:
+The dataset used in this project is a synthetically created dataset containing 50,000 rows of UPI transaction data. It has been modified to include variability and patterns for fraud detection purposes.
+You can find the dataset here: UPI Fraud Detection Dataset
+ About the Dataset
+The dataset contains transaction data related to UPI (Unified Payments Interface) transactions. It includes various features related to transactions and fraud indicators. It includes the data for fraudulent transactions for financial year 2023 to 2024.
+
+ Features:
+• Transaction_ID: Unique identifier for each transaction.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[51]:
+• 
+Date: Date of the transaction.
+• Time: Time of the transaction.
+• Merchant_ID: Unique identifier for the merchant involved in the transaction.
+• Customer_ID: Unique identifier for the customer involved in the transaction.
+• Device_ID: Unique identifier for the device used for the transaction.
+• Transaction_Type: Type of transaction (e.g., payment, transfer, etc.).
+• Payment_Gateway: Payment gateway used for the transaction.
+• Transaction_City: City where the transaction took place.
+• Transaction_State: State where the transaction took place.
+• IP_Address: IP address associated with the transaction.
+• Transaction_Status: Status of the transaction (e.g., success, failure, etc.).
+• Device_OS: Operating system of the device used for the transaction.
+• Transaction_Frequency: Frequency of transactions for the customer.
+• Merchant_Category: Category of the merchant involved in the transaction.
+• Transaction_Channel: Channel used for the transaction (e.g., mobile app, website, etc.).
+• Transaction_Amount_Deviation: Deviation of the transaction amount from the average transaction amount.
+• Days_Since_Last_Transaction: Number of days since the last transaction.
+• Amount: Transaction amount.
+• Fraud: Indicates whether the transaction is fraudulent (1) or not (0).
+ Methodology
+1. Data Preprocessing: Cleaning the data, handling missing values, encoding categorical fea- tures, and scaling numerical features.
+2. Exploratory Data Analysis: Understanding the distribution of features and identifying pat- terns related to fraud.
+3. Feature Engineering: Creating new features or transforming existing ones to improve model performance.
+4. Model Development: Training machine learning models for fraud detection.
+5. Model Evaluation: Assessing model performance using metrics such as accuracy, precision, recall, and F1-score.
+6. Conclusion: Summarizing findings and discussing potential areas for improvement.
+Let's dive into the project and start exploring the data!
+
+
+
+
+
+
+
+
+
+[52]:
+
+
+[53]:
+
+
+
+
+[54]:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[55]:
+
+
+
+<class 'pandas.core.frame.DataFrame'> RangeIndex: 50000 entries, 0 to 49999 Data columns (total 20 columns):
+#  Column	Non-Null Count Dtype
+
+0 Transaction_ID	50000 non-null	object
+1 Date	50000 non-null	object
+2 Time	50000 non-null	object
+3 Merchant_ID	50000 non-null	object
+4 Customer_ID	50000 non-null	object
+5 Device_ID	50000 non-null	object
+6 Transaction_Type	50000 non-null	object
+7 Payment_Gateway	50000 non-null	object
+8 Transaction_City	50000 non-null	object
+9 Transaction_State	50000 non-null	object
+10 IP_Address	50000 non-null	object
+11 Transaction_Status	50000 non-null	object
+12 Device_OS	50000 non-null	object
+13 Transaction_Frequency	50000 non-null	int64
+14 Merchant_Category	50000 non-null	object
+15 Transaction_Channel	50000 non-null	object
+16 Transaction_Amount_Deviation	50000 non-null	float64
+17 Days_Since_Last_Transaction	50000 non-null	int64
+18 amount	50000 non-null	float64
+ 19 fraud	50000 non-null	int64 dtypes: float64(2), int64(3), object(15)
+memory usage: 7.6+ MB
+
+
+[55]: (50000, 20)
+[56]:
+[56] :	Transaction_ID	Date	Time	Merchant_ID	\
+
+3	T00000004	18/09/23	5:07:24 AM	43001ee3-c6ca-4033-89e9-9502b3072bb7
+4	T00000005	18/08/23	12:16:28 PM	df1c84af-fa42-4ce7-99ea-5a9fd657361e
+Customer_ID	Device_ID	\
+0	bbd15462-34e8-4d84-b38d-c0a48ca151a5	35c93295-5585-40ec-9ba8-2ff3a3ed9246
+1	d93133d4-b039-4d19-8060-b8b3d8de4c0d	8e40bf94-19f0-4a27-a154-05ebfd14c5aa
+2	8d610bff-9b2b-41d5-86f7-df78c5aee909	b8f5781f-2b91-4c41-a1bf-25d69ba32ec1
+3	63d01a4c-3e68-49c6-a54c-e7ea14cfba44	725a2ef7-5e4b-4a20-b486-a647d9005cdf
+4	4c2613de-9129-4ab2-a2b4-dd6e008a487d	10dfb43d-6fb5-4e9f-9159-ffaf691b67c5
+Transaction_Type Payment_Gateway Transaction_City Transaction_State	\
+0 Purchase	ICICI  UPI	Mango	Uttarakhand
+1 Bank Transfer	HDFC	Gorakhpur	Himachal Pradesh
+2 Bill Payment	CRED	Khammam	Andhra Pradesh
+3 Other	HDFC	Nanded	Odisha
+4 Other	HDFC	Machilipatnam	West Bengal
+
+IP_AddressTransaction_StatusDevice_OSTransaction_Frequency\0	72.74.226.105PendingWindows21	111.214.109.143PendingWindows22	111.0.26.121PendingAndroid33	166.88.212.66CompletediOS04	20.34.147.155FailedWindows2Merchant_Category Transaction_Channel	\
+0 Travel bookings	Online
+1 Financial services and Taxes	Mobile
+2 Financial services and Taxes	In-store
+3 Utilities	Mobile
+4 Other	Online
+Transaction_Amount_Deviation	Days_Since_Last_Transaction	amount	fraud
+0	68.25	24	4.55	0
+1	-57.75	17	39.68	0
+2	-46.95	20	26.89	0
+3	-96.64	18	17.25	0
+4	36.14	5	35.72	0
+
+ DATA PREPARATION
+[57]:
+
+[57] : 0
+[58]:
+
+[58] : Transaction_ID	0
+Date	0
+Time	0
+Merchant_ID	0
+Customer_ID	0
+Device_ID	0
+Transaction_Type	0
+Payment_Gateway	0
+Transaction_City	0
+Transaction_State	0
+IP_Address	0
+Transaction_Status	0
+Device_OS	0
+Transaction_Frequency	0
+Merchant_Category	0
+Transaction_Channel	0
+Transaction_Amount_Deviation	0
+Days_Since_Last_Transaction	0
+amount	0
+fraud	0
+dtype: int64
+
+[59]:
+
+
+[59]:Transaction_ID50000Date367Time29624Merchant_ID50000Customer_ID50000Device_ID50000Transaction_Type7Payment_Gateway9Transaction_City316Transaction_State28IP_Address50000Transaction_Status3Device_OS4Transaction_Frequency20Merchant_Category10Transaction_Channel3Transaction_Amount_Deviation18417Days_Since_Last_Transaction29amount9766fraud2dtype: int64
+[60]:
+
+
+
+
+
+
+
+[61]:
+
+Unique columns with unique values:
+Index(['Transaction_ID', 'Merchant_ID', 'Customer_ID', 'Device_ID', 'IP_Address'],
+dtype='object')
+
+
+
+
+1.4.2	Data Cleaning and Feature Engineering
+[62]:
+
+[62]:  0	23/10/23
+1	31/05/23
+2	19/01/24
+3	18/09/23
+4	18/08/23
+Name: Date, dtype: object
+
+[63]:
+
+[64]:
+
+[65]:
+
+
+
+[66]:
+
+[66]: Index(['Date', 'Time', 'Transaction_Type', 'Payment_Gateway', 'Transaction_City', 'Transaction_State', 'Transaction_Status', 'Device_OS', 'Transaction_Frequency', 'Merchant_Category', 'Transaction_Channel', 'Transaction_Amount_Deviation', 'Days_Since_Last_Transaction', 'amount', 'fraud', 'Year', 'Month'], dtype='object')
+
+[67]:# First 5 rows
+df.head()[67]:DateTimeTransaction_TypePayment_GatewayTransaction_City\0 2023-10-234:36:16 AMPurchaseICICI UPIMango1 2023-05-314:36:16 AMBank TransferHDFCGorakhpur2 2024-01-194:36:16 AMBill PaymentCREDKhammam3 2023-09-185:07:24 AMOtherHDFCNanded4 2023-08-1812:16:28 PMOtherHDFCMachilipatnam
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[68]:
+
+Transaction_State Transaction_Status Device_OS	Transaction_Frequency	\
+
+
+
+
+Merchant_Category Transaction_Channel	\
+0 Travel bookings	Online
+1 Financial services and Taxes	Mobile
+2 Financial services and Taxes	In-store
+3 Utilities	Mobile
+4 Other	Online
+
+Transaction_Amount_DeviationDays_Since_Last_Transactionamountfraud\0	68.25244.5501	-57.751739.6802	-46.952026.8903	-96.641817.2504	36.14535.720Year	Month
+
+[68]: array([ 1,	2,	3,	4,	5,	6,	7,	8,	9, 10, 11, 12], dtype=int32)
+[69]:
+
+
+[70]:
+
+[71]:
+
+
+
+Descriptive statistics for numerical variables:
+
+[71]:Datecount 500002023-10-12               mean	\ 02:57:21.024000256Transaction_Frequency50000.03.7891Transaction_Amount_Deviation50000.00.036824Days_Since_Last_Transaction50000.015.01206amount50000.039.886908fraud50000.00.01548Year50000.02023.2793
+Date
+2023-04-12      min 00:00:00
+2023-07-1325%
+00:00:00\Transaction_Frequency0.01.0Transaction_Amount_Deviation-100.0-49.94Days_Since_Last_Transaction1.08.0amount0.013.81fraud0.00.0Year2023.02023.0
+Date
+2023-10-1350%
+00:00:00
+2024-01-1175%
+00:00:00\Transaction_Frequency2.03.0Transaction_Amount_Deviation-0.24549.9325Days_Since_Last_Transaction15.022.0amount26.9742.87
+
+fraud0.00.0Year2023.02024.0
+Date
+2024-04-12       max 00:00:00std NaNTransaction_Frequency90.07.165309Transaction_Amount_Deviation99.9957.766852Days_Since_Last_Transaction29.08.361009amount7432.48130.70298fraud1.00.123453Year2024.00.448661.4.3	Inference:Transaction Frequency:
+Users, on average, make around 4 transactions.
+The number of transactions per user varies widely, from 0 to 90.
+Transaction Amount Deviation:
+The average deviation from expected transaction amounts is very low, around 0.04. However, this deviation varies greatly, from -100 to 99.99.
+Days Since Last Transaction:
+On average, users make a transaction every 15 days.
+The time since the last transaction ranges from 1 day to 29 days.
+
+
+
+
+
+
+
+
+[72]:
+
+Amount:
+
+
+Fraud: Year:
+
+
+On average, transaction amounts are around 40 units. Transaction amounts range from 0 to 7432.48 units.
+
+Only around 1.5% of transactions are fraudulent.
+
+The data mainly spans the year 2023, with a small portion from 2024.
+
+
+[72] : fraud
+0	98.452
+1	1.548
+Name: proportion, dtype: float64
+
+[73]:
+
+[73] : <Axes: xlabel='fraud', ylabel='count'>
+
+
+
+
+
+1.4.4	Create separate DataFrames for normal and fraudulent transactions
+[74]:
+
+
+[75]:
+[75]: (774, 17)
+[76]:
+
+
+[76]:DateTimeTransaction_TypePayment_GatewayTransaction_City	\88	2023-08-0711:16:29 AMInvestmentPaytmGopalpur89	2023-07-297:26:15 AMInvestmentICICI UPISonipat434 2023-05-235:24:39 AMBill PaymentPaytmOrai435 2023-07-1210:50:16 AMRefundICICI UPITumkur553 2023-12-2911:19:11 AMSubscriptionRazor PayChinsurah
+Transaction_State Transaction_Status Device_OS	Transaction_Frequency	\
+88	Himachal Pradesh	Failed	Windows	1
+
+
+
+Merchant_Category Transaction_Channel	\
+88	Donations and Devotion	In-store
+89	More Services	Mobile
+434	More Services	In-store
+435	Financial services and Taxes	In-store
+553	Purchases	In-store
+
+Transaction_Amount_DeviationDays_Since_Last_Transactionamountfraud\88-30.551444.26189-40.5413324.50143483.3222176.321435-74.4527337.4115531.1124220.111
+88Year Month 2023	Aug892023	Jul4342023	May4352023	Jul5532023	Dec[77]:
+[77]: Date	datetime64[ns]
+Time	object
+Transaction_Type	object
+Payment_Gateway	object
+Transaction_City	object
+Transaction_State	object
+Transaction_Status	object
+Device_OS	object
+Transaction_Frequency	int64
+Merchant_Category	object
+Transaction_Channel	object
+Transaction_Amount_Deviation	float64
+Days_Since_Last_Transaction		int64 amount	float64
+fraud	int64
+Year	int32
+
+
+
+[78]:
+
+Month	object
+dtype: object
+
+
+[79]:
+
+[79]:Date Time
+Transaction_Type Payment_Gateway Transaction_City Transaction_State Transaction_Status Device_OS Transaction_Frequency Merchant_Category Transaction_Channel
+Transaction_Amount_Deviation Days_Since_Last_Transaction amount
+fraud Year Month
+dtype: object object object object object object object object object int64 object object float64 int64 float64 int64 int32 object1.4.5	Analysis for fraud[80]:# Describe the fraud DataFrame
+fraud.describe().T[80]:countmeanstdmin	\Transaction_Frequency774.03.9728687.4719340.00Transaction_Amount_Deviation774.03.15267457.815484-99.56Days_Since_Last_Transaction774.015.9444448.1277491.00amount774.0534.986977878.3875713.77fraud774.01.0000000.0000001.00Year774.02023.2816540.4500962023.0025%50%75%maxTransaction_Frequency1.00002.003.00060.00Transaction_Amount_Deviation-46.16506.4352.31599.66Days_Since_Last_Transaction9.000016.0023.00029.00amount147.8275309.50546.7107432.48fraud1.00001.001.0001.00Year2023.00002023.002024.0002024.00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[81]:
+[82]:
+1.4.6 
+Inference:
+* Transaction Frequency:
+On average, there are around 4 transactions per fraud case.
+The maximum number of transactions associated with a fraud case is 60.
+* Transaction Amount Deviation:
+The transaction amount varies considerably around an average of 3.15 units.
+The deviation in transaction amounts can be significant, with a maximum deviation of
+* Days Since Last Transaction:
+On average, a transaction occurs approximately every 16 days.
+The shortest time between transactions is 1 day, indicating frequent fraudulent acti
+* Transaction Amount:
+The average transaction amount associated with fraudulent activity is around 534.99 Transaction amounts vary significantly, with a maximum of 7432.48 units.
+* Year:
+Most fraudulent transactions occurred in the year 2023.
+Correlation check for entire dataset
+
+
+
+[82]:Transaction_FrequencyTransaction_Frequency	\
+1.000000Transaction_Amount_Deviation0.005282Days_Since_Last_Transaction0.011400amount-0.005520fraud0.003216Transaction_Amount_Deviation	\Transaction_Frequency0.005282Transaction_Amount_Deviation1.000000Days_Since_Last_Transaction-0.001588amount0.004560fraud0.006764Days_Since_Last_TransactionamountfraudTransaction_Frequency0.011400-0.0055200.003216Transaction_Amount_Deviation-0.0015880.0045600.006764Days_Since_Last_Transaction1.0000000.0084970.013983amount0.0084971.0000000.474991fraud0.0139830.4749911.000000
+
+
+
+[83]:
+[84]:
+1.4.7 
+Inference:
+Overall, none of the variables have a strong linear relationship with fraud. However, there
+Correlation check for fraud dataset
+
+
+[84]:	Transaction_Frequency	\
+Transaction_Frequency	1.000000
+Transaction_Amount_Deviation	0.021117
+Days_Since_Last_Transaction	0.037168
+amount	-0.042881
+fraud	NaN
+Transaction_Amount_Deviation	\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[85]:
+
+
+1.4.8 Visualizing entire dataset
+Visualizing different features basis the fraud occurence as a subplot
+
+
+1.4.9 Visualizing Fraud Data
+[86]:
+
+plt.ylabel('Fraud Markers') plt.xticks(rotation=45, ha='right')
+plt.tight_layout()	# Adjust layout to prevent overlap
+plt.show()
+# Plot 2: Fraud distribution by Payment Gateway
+plt.figure(figsize=(10, 6))
+sns.countplot(data=fraud,  x='Payment_Gateway',  palette='pastel',?
+?order=fraud['Payment_Gateway'].value_counts().index)
+plt.title('Fraud Distribution by Payment Gateway') plt.xlabel('Payment Gateway')
+plt.ylabel('Fraud Markers') plt.xticks(rotation=45, ha='right')
+plt.tight_layout()	# Adjust layout to prevent overlap
+plt.show()
+# Plot 3: Fraud distribution by Merchant Category
+plt.figure(figsize=(12, 6))
+sns.countplot(data=fraud,  x='Merchant_Category',  palette='pastel',?
+?order=fraud['Merchant_Category'].value_counts().index)
+plt.title('Fraud Distribution by Merchant Category') plt.xlabel('Merchant Category')
+plt.ylabel('Fraud Markers') plt.xticks(rotation=45, ha='right')
+plt.tight_layout()	# Adjust layout to prevent overlap
+plt.show()
+# Plot 7: Relationship between Transaction_State and Fraud using bar plot
+plt.figure(figsize=(10, 6))
+sns.countplot(data=fraud, x='Transaction_State', palette='pastel',?
+?order=fraud['Transaction_State'].value_counts().index)
+plt.title('Fraud Distribution by Transaction State') plt.xlabel('Transaction State')
+plt.ylabel('Fraud Markers') plt.xticks(rotation=45, ha='right')
+plt.tight_layout()	# Adjust layout to prevent overlap
+plt.show()
+# Plot 8: Relationship between Device_OS and Fraud using bar plot
+plt.figure(figsize=(10, 6))
+sns.countplot(data=fraud,  x='Device_OS',  palette='pastel',?
+?order=fraud['Device_OS'].value_counts().index)
+plt.title('Fraud Distribution by Device OS') plt.xlabel('Device OS')
+plt.ylabel('Fraud Markers') plt.xticks(rotation=45, ha='right')
+plt.tight_layout()	# Adjust layout to prevent overlap
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.4.10 Insights from Exploratory Data Analysis for UPI Fraud Detection:
+• Transaction Types: Among different transaction types, such as bank transfers, purchases, and bill payments, fraudulent activities are prominently associated, indicating vulnerabilities across various transaction categories.
+• Platforms: Platforms like ICICI, HDFC, and GooglePay are notably prone to fraudulent transactions, suggesting a need for enhanced security measures or closer monitoring on these platforms.
+• Merchant Categories: Certain merchant categories, such as home delivery services, travel bookings, and utility payments, exhibit a higher incidence of fraudulent transactions, indi- cating potential areas of vulnerability within these sectors.
+• Transaction Amounts: Transactions falling within the range of 250 to 750 units demon- strate a heightened susceptibility to fraud, suggesting that fraudsters target transactions of moderate value to avoid detection.
+• Temporal Trends: Transactions with amounts ranging from 0 to 1250 units account for the majority of fraudulent activities between FY 23-24, emphasizing the importance of monitoring transactions within this range for potential fraud.
+• Transaction Frequency: Transactions occurring at a frequency of 0 to 10 instances show a higher propensity for fraud, indicating that fraudsters may exploit less frequent transactions to evade detection.
+• Geographical Patterns: Certain states, such as Himachal Pradesh, Rajasthan, Megha- laya, and Bihar, exhibit a higher sensitivity to fraudulent transactions, necessitating targeted interventions or heightened vigilance in these regions.
+
+
+
+
+
+
+
+
+
+[87]:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[88]:
+• 
+Operating Systems: Devices operating on the Android OS report a higher number of fraudulent transactions, underscoring potential security vulnerabilities within Android-based platforms or applications.
+• Days Since Last Transaction: The feature 'days since last transaction' does not yield discernible patterns and does not contribute significantly to the analysis, suggesting that it may be omitted from further modeling efforts to streamline the feature set.
+By leveraging these insights, stakeholders can implement targeted strategies to enhance fraud de- tection mechanisms, bolster security protocols, and mitigate potential risks associated with UPI transactions.
+
+<class 'pandas.core.frame.DataFrame'> Index: 774 entries, 88 to 49953
+Data columns (total 17 columns):
+#	Column	Non-Null Count	Dtype
+
+0 Date	774 non-null	object
+1 Time	774 non-null	object
+2 Transaction_Type	774 non-null	object
+3 Payment_Gateway	774 non-null	object
+4 Transaction_City	774 non-null	object
+5 Transaction_State	774 non-null	object
+6 Transaction_Status	774 non-null	object
+7 Device_OS	774 non-null	object
+8 Transaction_Frequency	774 non-null	int64
+9 Merchant_Category	774 non-null	object
+10 Transaction_Channel	774 non-null	object
+11 Transaction_Amount_Deviation	774 non-null	float64
+12 Days_Since_Last_Transaction	774 non-null	int64
+13 amount	774 non-null	float64
+14 fraud	774 non-null	int64
+15 Year	774 non-null	int32
+ 16 Month	774 non-null	object dtypes: float64(2), int32(1), int64(3), object(11)
+memory usage: 105.8+ KB
+1.4.11 Statistical analysis for feature importance :
+
+
+
+[88]:ColumnChi-square statisticp-value\0Date331.3270630.9031261Time28251.8397721.0000002Transaction_Type6.9394910.3264793Payment_Gateway8.5224690.3841654Transaction_City344.1862710.1240285Transaction_State27.1705560.4546226Transaction_Status0.4788720.7870717Device_OS2.0419190.5637528Merchant_Category8.4139970.4930239Transaction_Channel0.9181240.63187610Month10.1247280.519204
+Comment	Recommendation
+0 No significant association with fraud	Can be removed
+1 No significant association with fraud	Can be removed
+2 No significant association with fraud	Can be removed
+3 No significant association with fraud	Can be removed
+4 No significant association with fraud	Can be removed
+5 No significant association with fraud	Can be removed
+6 No significant association with fraud	Can be removed
+7 No significant association with fraud	Can be removed
+8 No significant association with fraud	Can be removed
+9 No significant association with fraud	Can be removed
+10 No significant association with fraud	Can be removed
+
+
+
+
+
+[89]:
+1.4.12 
+Inference:
+- Below columns are not important and can be deleted
+- Transaction_Status, Time, Date, Device_OS, Transaction_Channel
+1.4.13 Dropping unnecessary columns from entire dataset
+
+
+
+
+
+
+
+
+[90]:
+
+
+
+
+
+
+
+
+
+
+
+
+
+[91]:
+
+
+
+<class 'pandas.core.frame.DataFrame'> RangeIndex: 50000 entries, 0 to 49999 Data columns (total 9 columns):
+#  Column	Non-Null Count Dtype
+
+	
+0	Transaction_Type50000non-null
+object1	Payment_Gateway50000non-nullobject2	Transaction_City50000non-nullobject3	Transaction_State50000non-nullobject4	Merchant_Category50000non-nullobject5	amount50000non-nullfloat646	fraud50000non-nullint647	Year50000non-nullint328	Month50000non-nullobjectdtypes: float64(1), int32(1), int64(1), object(6) memory usage: 3.2+ MB
+
+1.4.14 ANOVA-test:
+- Scenario: You can use a ANOVA-test to to determine whether there is a significant difference
+
+
+
+[91]:	ColumnF-statisticp-value	\0	amount1.456688e+040.0000001	fraudinf0.0000002	Year2.163681e-020.883058
+Comment	Recommendation
+0 Significant difference in amount between fraud...
+1 Significant difference in fraud between fraud ...
+2 No significant difference in Year between frau...	Can be removed
+[92]:
+
+[92]: Index(['Transaction_Type', 'Payment_Gateway', 'Transaction_City', 'Transaction_State', 'Merchant_Category', 'amount', 'fraud', 'Year', 'Month'],
+dtype='object')
+
+
+
+[93]:
+[94]:
+1.4.15 
+Encoding and scaling
+
+
+<class 'pandas.core.frame.DataFrame'> RangeIndex: 50000 entries, 0 to 49999 Data columns (total 9 columns):
+#  Column	Non-Null Count Dtype
+
+
+			
+
+
+
+
+
+
+
+
+[95]:
+0 
+Transaction_Type	50000 non-null	object
+1 Payment_Gateway	50000 non-null	object
+2 Transaction_City	50000 non-null	object
+3 Transaction_State	50000 non-null	object
+4 Merchant_Category	50000 non-null	object
+5 amount	50000 non-null	float64
+6 fraud	50000 non-null	int64
+7 Year	50000 non-null	int32
+ 8 Month	50000 non-null	object dtypes: float64(1), int32(1), int64(1), object(6) memory usage: 3.2+ MB
+
+
+[96]:
+
+
+
+[96]: Index(['Transaction_Type', 'Payment_Gateway', 'Transaction_City', 'Transaction_State', 'Merchant_Category', 'Year', 'Month'], dtype='object')
+
+[97]:
+
+
+
+
+
+
+[98]:
+
+
+
+
+
+
+
+[99]:
+[99] :	amount	fraud	Year	Month	Transaction_Type_Bill Payment	\
+
+
+2260141317001104350010Transaction_Type_Investment	Transaction_Type_Other	\000100200301401Transaction_Type_Purchase	Transaction_Type_Refund	\010100200300400
+Transaction_Type_Subscription...	Transaction_State_WestBengal\0	0...01	0...02	0...03	0...04	0...1Merchant_Category_Donations and Devotion	\0010203040Merchant_Category_Financial services and Taxes	\0011213040Merchant_Category_Home delivery	Merchant_Category_Investment	\000100200300400
+Merchant_Category_More  Services	Merchant_Category_Other	\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[100]:
+
+0	0	0
+1	0	0
+2	0	0
+3	0	0
+4	0	1
+Merchant_Category_Purchases	Merchant_Category_Travel bookings	\
+0	0	1
+1	0	0
+2	0	0
+3	0	0
+4	0	0
+Merchant_Category_Utilities
+0	0
+1	0
+2	0
+3	1
+4	0
+[5 rows x 369 columns]
+
+
+[100] : amount	int64
+fraud	int64
+Year	int64
+Month	int64
+Transaction_Type_Bill  Payment	int64
+                                           ... Merchant_Category_More Services    int64
+Merchant_Category_Other	int64
+Merchant_Category_Purchases	int64 Merchant_Category_Travel bookings int64 Merchant_Category_Utilities	int64 Length: 369, dtype: object
+
+[101]:
+[101] : (50000, 369)
+
+
+
+[102]:
+ 
+To improve the computational effeciency, taking 50% of the entire data for model building and testing keeping the ratio intact
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Model Building
+[103]: from sklearn.model_selection import train_test_split
+from  sklearn.preprocessing  import  StandardScaler
+# Perform scaling
+def preprocess_data(X):
+#  Initialize  StandardScaler
+scaler = StandardScaler()
+# Scale the features
+X_scaled = scaler.fit_transform(X)
+return X_scaled
+# Splitting the dataset into features (X) and target variable (y)
+X = data.drop('fraud', axis=1) y = data['fraud']
+# Preprocess the features
+X_scaled = preprocess_data(X)
+# Split the preprocessed data into the Training set and Test set
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2,?
+?random_state=42)
+
+# Print the shapes of the training and test sets print("Training features shape:", X_train.shape) print("Test features shape:", X_test.shape) print("Training target shape:", y_train.shape)
+
+
+Training features shape: (20000, 368)
+Test features shape: (5000, 368) Training target shape: (20000,) Test target shape: (5000,)
+
+ Model performance before data balancing. i.e, with RAW data
+[117]: import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score,?
+?f1_score, roc_auc_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from xgboost import XGBClassifier	# Import XGBoost classifier
+# Assuming you have already loaded your data into X and y
+# Split the sampled data into training and testing sets with a test size of 30%
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,?
+?random_state=42, stratify=y)
+# Define a function to evaluate a model and return a dictionary of metrics
+def evaluate_model(model, X_test, y_test):
+# Calculate predictions
+y_pred = model.predict(X_test)
+# Compute metrics
+accuracy = accuracy_score(y_test, y_pred) precision = precision_score(y_test, y_pred) recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+roc_auc = roc_auc_score(y_test, y_pred)
+# Return metrics as a dictionary
+return {
+'Model': type(model). name , 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall,
+'F1 Score': f1,
+'ROC AUC Score': roc_auc
+}
+# Define models without Support Vector Machine (SVM)
+models = {
+
+
+
+Decision Tree:
+Random Forest:
+Gradient Boosting:
+XGBoost:
+
+[117]:ModelAccuracyPrecisionRecallF1 Score	\0DecisionTreeClassifier0.98800.6197180.5714290.5945951RandomForestClassifier0.99240.8421050.6233770.7164182GradientBoostingClassifier0.99080.7719300.5714290.6567163XGBClassifier0.99000.7142860.5844160.642857
+0ROC AUC Score
+0.78297210.81077420.78439430.790380
+ Inferences
+• Accuracy: All models achieved high accuracy, ranging from 98.76% to 99.28%, indicating their proficiency in classifying transactions. However, accuracy alone might not provide a complete picture, especially in cases of imbalanced datasets like fraud detection.
+• Precision and Recall: Precision measures the percentage of correctly predicted positive instances among all predicted positive instances, while recall measures the percentage of
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[106]:
+
+correctly predicted positive instances among all actual positive instances.
+• F1 Score: The F1 score, the harmonic mean of precision and recall, offers a balanced assess- ment of the model's performance. It is particularly useful in scenarios with class imbalance, such as fraud detection.
+• ROC AUC Score: The ROC AUC (Receiver Operating Characteristic Area Under the Curve) score evaluates the model's ability to discriminate between classes. Higher ROC AUC scores indicate better performance.
+• Model Performance: While all models demonstrated strong performance, the Random Forest Classifier and XGBoost Classifier stood out. The Random Forest Classifier achieved an F1 score of 73.13% with an accuracy of 99.28%, indicating its ability to balance precision and recall effectively. On the other hand, the XGBoost Classifier surpassed all others with an F1 score of 64.29%, highlighting its robust performance.
+• Decision Tree and Gradient Boosting: Although the Decision Tree Classifier and Gra- dient Boosting Classifier exhibited competitive performance, they slightly lagged behind the Random Forest and XGBoost classifiers in terms of F1 score.
+• Overall Recommendation: Considering the F1 score and overall performance, the Random Forest Classifier emerges as the top choice for fraud detection in this scenario. However, the XGBoost Classifier also offers a strong alternative, particularly when computational efficiency is a concern. Both models provide effective solutions for identifying fraudulent transactions, with the Random Forest Classifier leading with the highest F1 score.
+
+ Balancing the data : There are two well-known techniques to deal with highly imbalanced datasets:
+- Undersampling technique
+- Oversampling(SMOTE)
+- We attempted the undersampling. However, due to its poor performance, we moved on to oversam
+ Oversampling (SMOTE)
+
+
+[107]:
+[107]: (25000, 368)
+[108]:
+[108]: (25000,)
+[109]:
+
+
+fraud
+1	24613
+0	24613
+Name: count, dtype: int64
+ Model performance post data balancing
+[110]: import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score,?
+?f1_score, roc_auc_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from xgboost import XGBClassifier	# Import XGBoost classifier
+# Define a function to evaluate a model and return a dictionary of metrics
+def evaluate_model(model, X_test, y_test):
+# Calculate predictions
+y_pred = model.predict(X_test)
+# Compute metrics
+accuracy = accuracy_score(y_test, y_pred) precision = precision_score(y_test, y_pred) recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+roc_auc = roc_auc_score(y_test, y_pred)
+# Return metrics as a dictionary
+return {
+'Model': type(model). name , 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall,
+'F1 Score': f1,
+'ROC AUC Score': roc_auc
+}
+# Split the balanced data into training and testing sets with a test size of 20%
+X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.
+?2, random_state=42, stratify=y_res)
+# Define models
+models = {
+
+
+
+Decision Tree:
+Random Forest:
+Gradient Boosting:
+XGBoost:
+
+[110]:ModelAccuracyPrecisionRecallF1 Score	\0DecisionTreeClassifier0.9847650.9772050.9926870.9848851RandomForestClassifier0.9932970.9971340.9894370.9932712GradientBoostingClassifier0.9729840.9854080.9601870.9726343XGBClassifier0.9948200.9951220.9945160.994819ROC AUC Score
+0	0.984765
+1	0.993297
+2	0.972984
+3	0.994820
+
+ Inference:
+XGBoost has the highest F1 Score: 99% across all metrics. Hence, it is the best model ou
+
+ XGBoost is known for its high performance and effeciency, and this model demonstrates excellent results across all the metrics.
+ Hyper Parameter Tuning : using RandomizedSearch
+[112]: # from sklearn.model_selection import GridSearchCV
+# # Define a narrower hyperparameter grid for each model # param_grid = {
+#	'Decision Tree': {'max_depth': [10, 20, 50],
+#	'min_samples_split': [2, 5, 10]},
+#	'Random Forest': {'n_estimators': [50, 100, 200],
+#	'max_depth': [10, 20],
+#	'min_samples_split': [2, 5]},
+#	'Gradient Boosting': {'n_estimators': [50, 100],
+#	'learning_rate': [0.05, 0.1],
+#	'max_depth': [3, 5]},
+#	'XGBoost': {'n_estimators': [50, 100],
+#	'learning_rate': [0.05, 0.1],
+#	'max_depth': [3, 5]} # }
+
+# # Perform hyperparameter tuning for each model # best_params = {}
+# for model_name, model in models.items():
+#	grid_search = GridSearchCV(estimator=model,
+#	param_grid=param_grid[model_name],
+#	scoring='f1',
+#	cv=5,
+#	verbose=2)
+#	grid_search.fit(X_train,  y_train)
+#	best_params[model_name] =  grid_search.best_params_
+# # Print best hyperparameters for each model
+# for model_name, params in best_params.items():
+#	print(f"Best hyperparameters for {model_name}: {params}")
+
+ Performance post hyperparameter tuning
+• Best hyperparameters for Decision Tree: {'max_depth': 50, 'min_samples_split': 10}
+• Best hyperparameters for Random Forest: {'max_depth': 20, 'min_samples_split': 5, 'n_estimators': 50}
+• Best hyperparameters for Gradient Boosting:	{'learning_rate':	0.1, 'max_depth':	5, 'n_estimators': 100}
+• Best hyperparameters for XGBoost: {'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 100}
+
+[113]:
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score,?
+?f1_score, roc_auc_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from xgboost import XGBClassifier	# Import XGBoost classifier
+# Define a function to evaluate a model and return a dictionary of metrics
+def evaluate_model(model, X_test, y_test):
+# Calculate predictions
+y_pred = model.predict(X_test)
+# Compute metrics
+accuracy = accuracy_score(y_test, y_pred) precision = precision_score(y_test, y_pred) recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+roc_auc = roc_auc_score(y_test, y_pred)
+# Return metrics as a dictionary
+return {
+'Model': type(model). name , 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall,
+'F1 Score': f1,
+'ROC AUC Score': roc_auc
+
+}
+# Split the balanced data into training and testing sets with a test size of 20%
+X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.
+?2, random_state=42, stratify=y_res)
+# Define models with best hyperparameters
+models = {
+"Decision Tree": DecisionTreeClassifier(max_depth=50, min_samples_split=10), "Random Forest": RandomForestClassifier(max_depth=20, min_samples_split=5,?
+?n_estimators=50),
+"Gradient Boosting": GradientBoostingClassifier(learning_rate=0.1,?
+?max_depth=5, n_estimators=100),
+"XGBoost": XGBClassifier(learning_rate=0.1, max_depth=5, n_estimators=100)
+}
+# List to store evaluation results
+results = []
+
+
+
+Decision Tree:
+Random Forest:
+Gradient Boosting:
+XGBoost:
+
+[113]:ModelAccuracyPrecisionRecallF1 Score	\0DecisionTreeClassifier0.9844610.9770000.9922810.9845811RandomForestClassifier0.9844610.9937890.9750150.9843132GradientBoostingClassifier0.9898440.9898440.9898440.9898443XGBClassifier0.9900470.9888550.9912650.990059
+0ROC AUC Score
+0.98446110.98446120.98984430.990047
+ Conclusion:
+[115]:
+
+
+
+
+
+[115]: XGBClassifier(base_score=None, booster=None, callbacks=None,
+colsample_bylevel=None, colsample_bynode=None, colsample_bytree=None, device=None, early_stopping_rounds=None, enable_categorical=False, eval_metric=None, feature_types=None, gamma=None, grow_policy=None, importance_type=None, interaction_constraints=None, learning_rate=0.1, max_bin=None, max_cat_threshold=None, max_cat_to_onehot=None,
+
+
+
+
+[116]:
+
+max_delta_step=None, max_depth=5, max_leaves=None, min_child_weight=None, missing=nan, monotone_constraints=None, multi_strategy=None, n_estimators=100, n_jobs=None, num_parallel_tree=None, random_state=None, ...)
+
+
+
+
+
+
+
+
+ Project Conclusion
+Throughout this project, we evaluated the performance of four distinct machine learning models for fraud detection in financial transactions: Decision Tree, Random Forest, Gradient Boosting, and XGBoost.
+After a comprehensive analysis, it is evident that the XGBoost model outperforms the other models in terms of accuracy, precision, recall, F1-score, and ROC AUC score. Despite the rigorous hyper- parameter tuning performed on all models, XGBoost consistently demonstrated superior predictive capabilities, making it the most suitable choice for detecting fraudulent transactions in this context.
+By saving the trained XGBoost model as a pickle file, we ensure its accessibility and deployment for real-time fraud detection tasks. This model can serve as a valuable tool in financial institutions, enabling them to proactively identify and prevent fraudulent activities, thereby safeguarding both businesses and customers from potential financial losses.
+
+ Recommendations to the business for fraud detection and prevention
+1. Enhance Transaction Monitoring: Implement real-time transaction monitoring systems to promptly identify and flag suspicious activities, leveraging insights from transaction types, amounts, and frequency patterns identified during exploratory data analysis.
+2. Platform-specific Security Measures: Collaborate with platform providers such as ICICI, HDFC, and GooglePay to strengthen security measures, including multi-factor authentica- tion, transaction verification, and fraud detection algorithms tailored to platform-specific vulnerabilities.
+3. Merchant Category Vigilance: Introduce targeted fraud detection measures for high- risk merchant categories like home delivery services, travel bookings, and utility payments, including enhanced transaction verification and risk-based authentication protocols.
+4. Focus on Moderate Transaction Values: Allocate resources to monitor transactions within the moderate value range of 250 to 750 units, where fraudulent activities are more prevalent, to improve detection rates and minimize losses.
+5. Geographic-based Risk Assessment: Develop regional risk profiles based on geographic
+
+patterns identified, focusing resources and fraud prevention initiatives in states such as Hi- machal Pradesh, Rajasthan, Meghalaya, and Bihar to mitigate localized fraud risks.
+6. Operating System Security: Collaborate with Android OS developers to address security vulnerabilities and enhance fraud prevention measures, ensuring robust security protocols for Android-based UPI applications and platforms.
+7. Continuous Monitoring and Adaptation: Establish mechanisms for continuous moni- toring and adaptation of fraud detection strategies, leveraging machine learning algorithms and advanced analytics to detect evolving fraud patterns and tactics.
+8. Regular Security Audits: Conduct regular security audits and risk assessments to iden- tify and address potential vulnerabilities, ensuring compliance with industry standards and regulations for secure UPI transactions.
+9. User Awareness and Education: Educate users about common fraud schemes, phishing attacks, and security best practices to empower them to recognize and report suspicious activities, fostering a collaborative approach to fraud prevention.
+10. Collaboration and Information Sharing: Foster collaboration and information sharing among industry stakeholders, financial institutions, law enforcement agencies, and regulatory bodies to combat fraud collectively and effectively.
+By implementing these recommendations, businesses can strengthen their UPI fraud detection and prevention strategies, mitigate risks, safeguard customer assets, and uphold trust and integrity in digital payment ecosystems.
+
+

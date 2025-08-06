@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scamurai - Maintenance</title>
+  <title>Scamurai - UPI Fraud Detection</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="upi.css">
@@ -31,47 +31,266 @@
 
   <main>
     <div class="container">
-      <div class="maintenance-card">
-        <div class="maintenance-icon">
-          <i class="fas fa-tools"></i>
-        </div>
-        <h2>Website Under Maintenance</h2>
-        <p>We're currently performing scheduled maintenance to improve your experience. Scamurai will be back online shortly with enhanced security features and a better user interface.</p>
-        <p>We apologize for any inconvenience and appreciate your patience during this upgrade period.</p>
-        
-        <div class="progress-container">
-          <div class="progress-bar"></div>
-        </div>
-        
-        <div class="status-info">
-          <div class="status-item">
-            <h4>Maintenance Progress</h4>
-            <p>30% Complete</p>
+      <div class="fraud-detection-card">
+        <div class="card-header">
+          <div class="header-icon">
+            <i class="fas fa-money-bill-wave"></i>
           </div>
-          <div class="status-item">
-            <h4>Estimated Completion</h4>
-            <p>1 month</p>
+          <h1>UPI Fraud Detection</h1>
+          <p>Protect yourself from UPI scams with our advanced fraud detection system</p>
+        </div>
+
+        <form id="fraudDetectionForm" class="detection-form">
+          <div class="form-group">
+            <label for="upiId">
+              <i class="fas fa-user"></i>
+              UPI ID
+            </label>
+            <input 
+              type="text" 
+              id="upiId" 
+              name="upiId" 
+              placeholder="e.g., john.doe@paytm"
+              required
+            >
+            <div class="input-hint">Enter the UPI ID you want to verify</div>
           </div>
-          <div class="status-item">
-            <h4>Last Updated</h4>
-            <p>Just Now</p>
+
+          <div class="form-group">
+            <label for="amount">
+              <i class="fas fa-rupee-sign"></i>
+              Transaction Amount
+            </label>
+            <input 
+              type="number" 
+              id="amount" 
+              name="amount" 
+              placeholder="Enter amount"
+              min="1"
+              required
+            >
+            <div class="input-hint">Amount in rupees</div>
+          </div>
+
+          <div class="form-group">
+            <label for="merchantName">
+              <i class="fas fa-store"></i>
+              Merchant Name
+            </label>
+            <input 
+              type="text" 
+              id="merchantName" 
+              name="merchantName" 
+              placeholder="e.g., Amazon, Flipkart"
+              required
+            >
+            <div class="input-hint">Name of the merchant or recipient</div>
+          </div>
+
+          <div class="form-group">
+            <label for="paymentGateway">
+              <i class="fas fa-credit-card"></i>
+              Payment Gateway
+            </label>
+            <select id="paymentGateway" name="paymentGateway">
+              <option value="">Select Payment Gateway</option>
+              <option value="ICICI UPI">ICICI UPI</option>
+              <option value="HDFC">HDFC</option>
+              <option value="GooglePay">GooglePay</option>
+              <option value="Paytm">Paytm</option>
+              <option value="PhonePe">PhonePe</option>
+              <option value="Razor Pay">Razor Pay</option>
+              <option value="CRED">CRED</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="input-hint">Payment platform being used</div>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionType">
+              <i class="fas fa-exchange-alt"></i>
+              Transaction Type
+            </label>
+            <select id="transactionType" name="transactionType">
+              <option value="">Select Transaction Type</option>
+              <option value="Purchase">Purchase</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Bill Payment">Bill Payment</option>
+              <option value="Investment">Investment</option>
+              <option value="Refund">Refund</option>
+              <option value="Subscription">Subscription</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="input-hint">Type of transaction being performed</div>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionState">
+              <i class="fas fa-map-marker-alt"></i>
+              Transaction State
+            </label>
+            <select id="transactionState" name="transactionState">
+              <option value="">Select State</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Odisha">Odisha</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="input-hint">State where transaction is being made</div>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionFrequency">
+              <i class="fas fa-chart-line"></i>
+              Transaction Frequency
+            </label>
+            <input 
+              type="number" 
+              id="transactionFrequency" 
+              name="transactionFrequency" 
+              placeholder="Number of transactions in last month"
+              min="0"
+            >
+            <div class="input-hint">How many transactions you made in the last month</div>
+          </div>
+
+          <div class="form-group">
+            <label for="daysSinceLastTransaction">
+              <i class="fas fa-calendar-alt"></i>
+              Days Since Last Transaction
+            </label>
+            <input 
+              type="number" 
+              id="daysSinceLastTransaction" 
+              name="daysSinceLastTransaction" 
+              placeholder="Days since your last transaction"
+              min="0"
+            >
+            <div class="input-hint">Number of days since your last transaction</div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">
+              <i class="fas fa-file-alt"></i>
+              Transaction Description (Optional)
+            </label>
+            <textarea 
+              id="description" 
+              name="description" 
+              placeholder="Any additional details about the transaction"
+              rows="3"
+            ></textarea>
+            <div class="input-hint">Additional context helps in better analysis</div>
+          </div>
+
+          <button type="submit" class="detect-btn">
+            <i class="fas fa-search"></i>
+            Analyze Transaction
+          </button>
+        </form>
+
+        <div id="results" class="results-section" style="display: none;">
+          <div class="results-header">
+            <h2>Fraud Analysis Results</h2>
+            <div class="risk-indicator" id="riskIndicator">
+              <span class="risk-level" id="riskLevel">LOW</span>
+              <div class="risk-score">
+                <span id="riskScore">0%</span>
+                <div class="score-bar">
+                  <div class="score-fill" id="scoreFill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analysis-grid">
+            <div class="analysis-card">
+              <div class="card-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Warnings
+              </div>
+              <div class="warnings-list" id="warningsList">
+                <!-- Warnings will be populated here -->
+              </div>
+            </div>
+
+            <div class="analysis-card">
+              <div class="card-title">
+                <i class="fas fa-lightbulb"></i>
+                Recommendations
+              </div>
+              <div class="recommendations-list" id="recommendationsList">
+                <!-- Recommendations will be populated here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="detailed-analysis">
+            <h3>Detailed Analysis</h3>
+            <div class="analysis-tabs">
+              <button class="tab-btn active" data-tab="upi">UPI Analysis</button>
+              <button class="tab-btn" data-tab="amount">Amount Analysis</button>
+              <button class="tab-btn" data-tab="merchant">Merchant Analysis</button>
+              <button class="tab-btn" data-tab="patterns">Pattern Analysis</button>
+              <button class="tab-btn" data-tab="ml">ML Insights</button>
+            </div>
+            
+            <div class="tab-content">
+              <div class="tab-pane active" id="upi-tab">
+                <div class="analysis-details" id="upiAnalysis">
+                  <!-- UPI analysis details -->
+                </div>
+              </div>
+              <div class="tab-pane" id="amount-tab">
+                <div class="analysis-details" id="amountAnalysis">
+                  <!-- Amount analysis details -->
+                </div>
+              </div>
+              <div class="tab-pane" id="merchant-tab">
+                <div class="analysis-details" id="merchantAnalysis">
+                  <!-- Merchant analysis details -->
+                </div>
+              </div>
+              <div class="tab-pane" id="patterns-tab">
+                <div class="analysis-details" id="patternsAnalysis">
+                  <!-- Pattern analysis details -->
+                </div>
+              </div>
+              <div class="tab-pane" id="ml-tab">
+                <div class="analysis-details" id="mlAnalysis">
+                  <!-- ML insights details -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="action-btn safe" id="safeBtn" style="display: none;">
+              <i class="fas fa-check"></i>
+              Transaction Appears Safe
+            </button>
+            <button class="action-btn warning" id="warningBtn" style="display: none;">
+              <i class="fas fa-exclamation"></i>
+              Proceed with Caution
+            </button>
+            <button class="action-btn danger" id="dangerBtn" style="display: none;">
+              <i class="fas fa-ban"></i>
+              DO NOT Proceed
+            </button>
+            <button class="action-btn secondary" id="newAnalysisBtn">
+              <i class="fas fa-redo"></i>
+              New Analysis
+            </button>
           </div>
         </div>
-        
-        <div class="contact-card">
-          <h4><i class="fas fa-headset"></i> Need Immediate Assistance?</h4>
-          <div class="contact-info">
-            <a href="mailto:support@scamurai.com" class="contact-item">
-              <i class="fas fa-envelope"></i> support@scamurai.com
-            </a>
-            <a href="#" class="contact-item">
-              <i class="fas fa-comment-alt"></i> Live Chat
-            </a>
-            <a href="#" class="contact-item">
-              <i class="fas fa-phone-alt"></i> +1 (555) 123-4567
-            </a>
-          </div>
-        </div>
+
+
       </div>
     </div>
   </main>
@@ -82,9 +301,17 @@
     </div>
   </footer>
 
+  <script src="train-xgboost-model.js"></script>
+  <script src="upi-fraud-detector.js"></script>
+  <script src="upi-xgboost-model.js"></script>
   <script>
-    // Theme Switch
+    // Initialize fraud detector
+    const fraudDetector = new UPIFraudDetector();
+    
+
+    
     document.addEventListener("DOMContentLoaded", async () => {
+      // Theme Switch
       const themeToggle = document.getElementById('themeToggle');
       const body = document.body;
       
@@ -120,149 +347,354 @@
       // Create background animations on page load
       createBackgroundAnimations();
       
-      // Animate progress bar
-      const progressBar = document.querySelector('.progress-bar');
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress += 0.5;
-        if (progress <= 30) {
-          progressBar.style.width = `${progress}%`;
-        } else {
-          clearInterval(progressInterval);
-        }
-      }, 100);
+      // Initialize custom select dropdowns
+      initializeCustomSelects();
       
-      // Update time since last update
-      const lastUpdatedEl = document.querySelector('.status-item:nth-child(3) p');
-      setInterval(() => {
-        lastUpdatedEl.textContent = "Just Now";
-      }, 60000);
-            
-      function createBackgroundAnimations() {
-        // Clear existing elements
-        document.getElementById('hexagons').innerHTML = '';
-        document.getElementById('particles').innerHTML = '';
-        document.getElementById('binaryCode').innerHTML = '';
-        document.getElementById('floatingCircles').innerHTML = '';
+      // Form submission
+      const form = document.getElementById('fraudDetectionForm');
+      const resultsSection = document.getElementById('results');
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
         
-        // Create hexagons
-        const hexagonsContainer = document.getElementById('hexagons');
-        const hexagonCount = 15;
+        const formData = new FormData(form);
+        const transactionData = {
+          upiId: formData.get('upiId'),
+          amount: parseFloat(formData.get('amount')),
+          merchantName: formData.get('merchantName'),
+          paymentGateway: formData.get('paymentGateway') || '',
+          transactionType: formData.get('transactionType') || '',
+          transactionState: formData.get('transactionState') || '',
+          transactionFrequency: formData.get('transactionFrequency') ? parseInt(formData.get('transactionFrequency')) : undefined,
+          daysSinceLastTransaction: formData.get('daysSinceLastTransaction') ? parseInt(formData.get('daysSinceLastTransaction')) : undefined,
+          description: formData.get('description') || ''
+        };
         
-        for (let i = 0; i < hexagonCount; i++) {
-          const hexagon = document.createElement('div');
-          hexagon.classList.add('hexagon');
-          
-          // Random properties
-          const size = Math.random() * 40 + 20;
-          const posX = Math.random() * 100;
-          const duration = Math.random() * 30 + 20;
-          const delay = Math.random() * 10;
-          
-          hexagon.style.width = `${size}px`;
-          hexagon.style.height = `${size * 0.577}px`;
-          hexagon.style.left = `${posX}%`;
-          hexagon.style.bottom = `-${size}px`;
-          hexagon.style.animationDuration = `${duration}s`;
-          hexagon.style.animationDelay = `${delay}s`;
-          
-          // Random color for hexagons
-          const colors = ['#00BCD4', '#00E5FF', '#80DEEA', '#26C6DA'];
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          hexagon.style.background = color;
-          
-          // ALWAYS append regardless of theme
-          hexagonsContainer.appendChild(hexagon);
-        }
+        // Perform fraud detection
+        const analysis = fraudDetector.getDetailedAnalysis(transactionData);
+        displayResults(analysis);
         
-        // Create particles
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = 50;
-        
-        for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('particle');
+        // Show results
+        resultsSection.style.display = 'block';
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      // Tab functionality
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetTab = btn.getAttribute('data-tab');
           
-          // Random properties
-          const size = Math.random() * 8 + 2;
-          const posX = Math.random() * 100;
-          const duration = Math.random() * 20 + 10;
-          const delay = Math.random() * 5;
+          // Remove active class from all tabs and panes
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabPanes.forEach(p => p.classList.remove('active'));
           
-          particle.style.width = `${size}px`;
-          particle.style.height = `${size}px`;
-          particle.style.left = `${posX}%`;
-          particle.style.bottom = `-${size}px`;
-          particle.style.animationDuration = `${duration}s`;
-          particle.style.animationDelay = `${delay}s`;
-          
-          // Random color for particles
-          const colors = ['#00BCD4', '#00E5FF', '#80DEEA', '#26C6DA'];
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          particle.style.background = color;
-          
-          // ALWAYS append regardless of theme
-          particlesContainer.appendChild(particle);
-        }
-        
-        // Create binary code
-        const binaryContainer = document.getElementById('binaryCode');
-        const binaryCount = 30;
-        const binaryChars = ['0', '1'];
-        
-        for (let i = 0; i < binaryCount; i++) {
-          const binaryDigit = document.createElement('div');
-          binaryDigit.classList.add('binary-digit');
-          
-          // Random properties
-          const posX = Math.random() * 100;
-          const duration = Math.random() * 30 + 20;
-          const delay = Math.random() * 10;
-          const charCount = Math.floor(Math.random() * 10) + 5;
-          let content = '';
-          
-          for(let j = 0; j < charCount; j++) {
-            content += binaryChars[Math.floor(Math.random() * 2)];
-          }
-          
-          binaryDigit.textContent = content;
-          binaryDigit.style.left = `${posX}%`;
-          binaryDigit.style.bottom = `-50px`;
-          binaryDigit.style.animationDuration = `${duration}s`;
-          binaryDigit.style.animationDelay = `${delay}s`;
-          binaryDigit.style.fontSize = `${Math.random() * 10 + 14}px`;
-          
-          // ALWAYS append regardless of theme
-          binaryContainer.appendChild(binaryDigit);
-        }
-        
-        // Create floating circles
-        const circlesContainer = document.getElementById('floatingCircles');
-        const circleCount = 10;
-        
-        for (let i = 0; i < circleCount; i++) {
-          const circle = document.createElement('div');
-          circle.classList.add('floating-circle');
-          
-          // Random properties
-          const size = Math.random() * 200 + 50;
-          const posX = Math.random() * 100;
-          const duration = Math.random() * 40 + 20;
-          const delay = Math.random() * 10;
-          
-          circle.style.width = `${size}px`;
-          circle.style.height = `${size}px`;
-          circle.style.left = `${posX}%`;
-          circle.style.bottom = `-${size}px`;
-          circle.style.animationDuration = `${duration}s`;
-          circle.style.animationDelay = `${delay}s`;
-          circle.style.opacity = `${Math.random() * 0.1 + 0.05}`;
-          
-          // ALWAYS append regardless of theme
-          circlesContainer.appendChild(circle);
-        }
-      }
+          // Add active class to clicked tab and corresponding pane
+          btn.classList.add('active');
+          document.getElementById(`${targetTab}-tab`).classList.add('active');
+        });
+      });
+      
+      // New analysis button
+      document.getElementById('newAnalysisBtn').addEventListener('click', () => {
+        form.reset();
+        resultsSection.style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
     });
+    
+    function displayResults(analysis) {
+      // Update risk indicator
+      const riskLevel = document.getElementById('riskLevel');
+      const riskScore = document.getElementById('riskScore');
+      const scoreFill = document.getElementById('scoreFill');
+      
+      riskLevel.textContent = analysis.riskLevel;
+      riskLevel.className = `risk-level ${analysis.riskLevel.toLowerCase()}`;
+      
+      const scorePercentage = Math.round(analysis.riskScore * 100);
+      riskScore.textContent = `${scorePercentage}%`;
+      
+      scoreFill.style.width = `${scorePercentage}%`;
+      scoreFill.className = `score-fill ${analysis.riskLevel.toLowerCase()}`;
+      
+      // Update warnings
+      const warningsList = document.getElementById('warningsList');
+      warningsList.innerHTML = '';
+      
+      if (analysis.warnings.length === 0) {
+        warningsList.innerHTML = '<div class="no-warnings">No warnings detected</div>';
+      } else {
+        analysis.warnings.forEach(warning => {
+          const warningItem = document.createElement('div');
+          warningItem.className = 'warning-item';
+          warningItem.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${warning}`;
+          warningsList.appendChild(warningItem);
+        });
+      }
+      
+      // Update recommendations
+      const recommendationsList = document.getElementById('recommendationsList');
+      recommendationsList.innerHTML = '';
+      
+      analysis.recommendations.forEach(recommendation => {
+        const recItem = document.createElement('div');
+        recItem.className = 'recommendation-item';
+        recItem.innerHTML = `<i class="fas fa-check-circle"></i> ${recommendation}`;
+        recommendationsList.appendChild(recItem);
+      });
+      
+      // Update detailed analysis
+      updateDetailedAnalysis(analysis);
+      
+      // Show appropriate action buttons
+      showActionButtons(analysis.riskLevel);
+    }
+    
+    function updateDetailedAnalysis(analysis) {
+      // UPI Analysis
+      const upiAnalysis = document.getElementById('upiAnalysis');
+      const upi = analysis.analysis.upiAnalysis;
+      
+      upiAnalysis.innerHTML = `
+        <div class="analysis-item ${upi.isValid ? 'valid' : 'invalid'}">
+          <strong>Format Validation:</strong> ${upi.isValid ? 'Valid' : 'Invalid'}
+        </div>
+        <div class="analysis-item ${upi.isSuspicious ? 'suspicious' : 'safe'}">
+          <strong>Suspicious Patterns:</strong> ${upi.isSuspicious ? 'Detected' : 'None Found'}
+        </div>
+        ${upi.warnings.map(warning => `<div class="warning-detail">• ${warning}</div>`).join('')}
+      `;
+      
+      // Amount Analysis
+      const amountAnalysis = document.getElementById('amountAnalysis');
+      const amount = analysis.analysis.amountAnalysis;
+      
+      amountAnalysis.innerHTML = `
+        <div class="analysis-item ${amount.isSuspicious ? 'suspicious' : 'safe'}">
+          <strong>Suspicious Amount:</strong> ${amount.isSuspicious ? 'Yes' : 'No'}
+        </div>
+        ${amount.warnings.map(warning => `<div class="warning-detail">• ${warning}</div>`).join('')}
+      `;
+      
+      // Merchant Analysis
+      const merchantAnalysis = document.getElementById('merchantAnalysis');
+      const merchant = analysis.analysis.merchantAnalysis;
+      
+      merchantAnalysis.innerHTML = `
+        <div class="analysis-item ${merchant.isSuspicious ? 'suspicious' : 'safe'}">
+          <strong>Suspicious Merchant:</strong> ${merchant.isSuspicious ? 'Yes' : 'No'}
+        </div>
+        ${merchant.warnings.map(warning => `<div class="warning-detail">• ${warning}</div>`).join('')}
+      `;
+      
+             // Pattern Analysis
+       const patternsAnalysis = document.getElementById('patternsAnalysis');
+       const patterns = analysis.analysis.patternAnalysis;
+       
+       patternsAnalysis.innerHTML = `
+         <div class="analysis-item ${patterns.isSuspicious ? 'suspicious' : 'safe'}">
+           <strong>Suspicious Patterns:</strong> ${patterns.isSuspicious ? 'Detected' : 'None Found'}
+         </div>
+         ${patterns.warnings.map(warning => `<div class="warning-detail">• ${warning}</div>`).join('')}
+         ${patterns.mlInsights ? patterns.mlInsights.map(insight => `<div class="ml-insight">🔬 ${insight}</div>`).join('') : ''}
+       `;
+
+       // ML Analysis
+       const mlAnalysis = document.getElementById('mlAnalysis');
+       const ml = analysis.analysis.mlAnalysis;
+       
+       mlAnalysis.innerHTML = `
+         <div class="analysis-item ${ml.isSuspicious ? 'suspicious' : 'safe'}">
+           <strong>ML Analysis:</strong> ${ml.isSuspicious ? 'Suspicious Patterns Detected' : 'No Suspicious Patterns'}
+         </div>
+         ${ml.warnings.map(warning => `<div class="warning-detail">• ${warning}</div>`).join('')}
+         ${ml.insights ? ml.insights.map(insight => `<div class="ml-insight">🔬 ${insight}</div>`).join('') : ''}
+       `;
+     }
+    
+    function showActionButtons(riskLevel) {
+      const safeBtn = document.getElementById('safeBtn');
+      const warningBtn = document.getElementById('warningBtn');
+      const dangerBtn = document.getElementById('dangerBtn');
+      
+      // Hide all buttons first
+      safeBtn.style.display = 'none';
+      warningBtn.style.display = 'none';
+      dangerBtn.style.display = 'none';
+      
+      // Show appropriate button based on risk level
+      switch (riskLevel) {
+        case 'LOW':
+          safeBtn.style.display = 'inline-flex';
+          break;
+        case 'MEDIUM':
+          warningBtn.style.display = 'inline-flex';
+          break;
+        case 'HIGH':
+          dangerBtn.style.display = 'inline-flex';
+          break;
+      }
+    }
+    
+    function initializeCustomSelects() {
+      const selects = document.querySelectorAll('.form-group select');
+      
+      selects.forEach(select => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'select-wrapper';
+        select.parentNode.insertBefore(wrapper, select);
+        wrapper.appendChild(select);
+        
+        // Add custom dropdown functionality
+        select.addEventListener('focus', function() {
+          this.style.borderColor = 'var(--primary)';
+          this.style.boxShadow = '0 0 0 3px rgba(0, 188, 212, 0.1)';
+        });
+        
+        select.addEventListener('blur', function() {
+          this.style.borderColor = '';
+          this.style.boxShadow = '';
+        });
+        
+        // Add hover effect to options (for browsers that support it)
+        select.addEventListener('mouseenter', function() {
+          this.style.borderColor = 'var(--primary)';
+          this.style.boxShadow = '0 0 0 2px rgba(0, 188, 212, 0.1)';
+        });
+        
+        select.addEventListener('mouseleave', function() {
+          if (document.activeElement !== this) {
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+          }
+        });
+      });
+    }
+    
+    function createBackgroundAnimations() {
+      // Clear existing elements
+      document.getElementById('hexagons').innerHTML = '';
+      document.getElementById('particles').innerHTML = '';
+      document.getElementById('binaryCode').innerHTML = '';
+      document.getElementById('floatingCircles').innerHTML = '';
+      
+      // Create hexagons
+      const hexagonsContainer = document.getElementById('hexagons');
+      const hexagonCount = 15;
+      
+      for (let i = 0; i < hexagonCount; i++) {
+        const hexagon = document.createElement('div');
+        hexagon.classList.add('hexagon');
+        
+        // Random properties
+        const size = Math.random() * 40 + 20;
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 30 + 20;
+        const delay = Math.random() * 10;
+        
+        hexagon.style.width = `${size}px`;
+        hexagon.style.height = `${size * 0.577}px`;
+        hexagon.style.left = `${posX}%`;
+        hexagon.style.bottom = `-${size}px`;
+        hexagon.style.animationDuration = `${duration}s`;
+        hexagon.style.animationDelay = `${delay}s`;
+        
+        // Random color for hexagons
+        const colors = ['#00BCD4', '#00E5FF', '#80DEEA', '#26C6DA'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        hexagon.style.background = color;
+        
+        hexagonsContainer.appendChild(hexagon);
+      }
+      
+      // Create particles
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random properties
+        const size = Math.random() * 8 + 2;
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.bottom = `-${size}px`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        // Random color for particles
+        const colors = ['#00BCD4', '#00E5FF', '#80DEEA', '#26C6DA'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.background = color;
+        
+        particlesContainer.appendChild(particle);
+      }
+      
+      // Create binary code
+      const binaryContainer = document.getElementById('binaryCode');
+      const binaryCount = 30;
+      const binaryChars = ['0', '1'];
+      
+      for (let i = 0; i < binaryCount; i++) {
+        const binaryDigit = document.createElement('div');
+        binaryDigit.classList.add('binary-digit');
+        
+        // Random properties
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 30 + 20;
+        const delay = Math.random() * 10;
+        const charCount = Math.floor(Math.random() * 10) + 5;
+        let content = '';
+        
+        for(let j = 0; j < charCount; j++) {
+          content += binaryChars[Math.floor(Math.random() * 2)];
+        }
+        
+        binaryDigit.textContent = content;
+        binaryDigit.style.left = `${posX}%`;
+        binaryDigit.style.bottom = `-50px`;
+        binaryDigit.style.animationDuration = `${duration}s`;
+        binaryDigit.style.animationDelay = `${delay}s`;
+        binaryDigit.style.fontSize = `${Math.random() * 10 + 14}px`;
+        
+        binaryContainer.appendChild(binaryDigit);
+      }
+      
+      // Create floating circles
+      const circlesContainer = document.getElementById('floatingCircles');
+      const circleCount = 10;
+      
+      for (let i = 0; i < circleCount; i++) {
+        const circle = document.createElement('div');
+        circle.classList.add('floating-circle');
+        
+        // Random properties
+        const size = Math.random() * 200 + 50;
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 40 + 20;
+        const delay = Math.random() * 10;
+        
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        circle.style.left = `${posX}%`;
+        circle.style.bottom = `-${size}px`;
+        circle.style.animationDuration = `${duration}s`;
+        circle.style.animationDelay = `${delay}s`;
+        circle.style.opacity = `${Math.random() * 0.1 + 0.05}`;
+        
+        circlesContainer.appendChild(circle);
+      }
+    }
   </script>
 </body>
 </html>
