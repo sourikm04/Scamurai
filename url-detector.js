@@ -43,7 +43,7 @@ const urlDetector = (function () {
         'vercel.com', 'netlify.com', 'cloudflare.com', 'aws.amazon.com', 'azure.microsoft.com',
         'digitalocean.com', 'linode.com', 'vultr.com', 'ovh.com', 'godaddy.com',
         'namecheap.com', 'hostgator.com', 'bluehost.com', 'dreamhost.com', 'siteground.com',
-        'tcs.com', 'tcs.co.in', 'tata.com', 'tata.co.in', 'sap.com', 'psgitech.com'
+        'tcs.com', 'tcs.co.in', 'tata.com', 'tata.co.in', 'sap.com', 'psgitech.com','agilekolkata.com'
     ]);
     
     const brandPatterns = {
